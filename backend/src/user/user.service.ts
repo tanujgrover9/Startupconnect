@@ -15,7 +15,7 @@ export class UserService {
                 withDeleted: true
             });
 
-            if(!existingUser) {
+            if(existingUser) {
                 throw new ConflictException('User With this email already exists');
             }
 
@@ -23,6 +23,16 @@ export class UserService {
             const savedUser = await this.userRepository.save(user);
 
             return savedUser;
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async findAll() {
+        try {
+            const users = await this.userRepository.find();
+
+            return users
         } catch (error) {
             throw error
         }
