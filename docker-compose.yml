@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: startupconnect_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-startupconnect}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-startupconnect}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - startupconnect
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d startupconnect"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: startupconnect_backend
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=${POSTGRES_DB:-startupconnect}
+      - DATABASE_USER=${POSTGRES_USER:-postgres}
+      - DATABASE_PASSWORD=${POSTGRES_PASSWORD:-startupconnect}
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - startupconnect
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: startupconnect_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5173
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - startupconnect
+
+volumes:
+  postgres_data:
+
+networks:
+  startupconnect:
+    driver: bridge
