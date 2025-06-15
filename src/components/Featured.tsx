@@ -1,19 +1,23 @@
 import React from "react";
 import { BookOpen, AlertCircle, MessageSquare, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const articles = [
   {
     title: "How to Start a Business from Scratch",
     icon: <BookOpen className="text-green-600 w-7 h-7" />,
+    path: "/learn/start-business"
   },
   {
     title: "10 Mistakes First-Time Founders Make",
     icon: <AlertCircle className="text-red-500 w-7 h-7" />,
+    path: "/learn/founder-mistakes"
   },
   {
     title: "Crafting Your Pitch to Investors",
     icon: <MessageSquare className="text-indigo-600 w-7 h-7" />,
+    path: "/learn/pitch-investors"
   },
 ];
 
@@ -39,9 +43,12 @@ const LearnSection = () => {
               <h3 className="text-xl font-semibold text-gray-800 mb-3">
                 {article.title}
               </h3>
-              <button className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium">
+              <Link
+                to={article.path}
+                className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium"
+              >
                 Read More <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
             </motion.div>
           ))}
         </div>

@@ -31,7 +31,7 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section className="relative py-20 bg-gradient-to-br from-[#e0f7ec] to-[#f0fdf4] px-6 overflow-hidden rounded-xl mt-4">
+    <section className="relative py-20 bg-gradient-to-br from-[#e0f7ec] to-[#f0fdf4] px-6 overflow-hidden rounded-xl">
       <div className="max-w-7xl mx-auto text-center">
         <h2 className="text-4xl md:text-5xl font-extrabold text-green-800 mb-4 drop-shadow-sm">
           How It Works

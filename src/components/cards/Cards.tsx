@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, UserPlus, Handshake, MessagesSquare } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const features = [
   {
@@ -9,6 +10,7 @@ const features = [
     icon: <Users size={28} className="text-blue-600" />,
     button: "Search Investors",
     gradient: "from-blue-100 via-white to-blue-50",
+    link: "/findInvestors",
   },
   {
     title: "Join as Member",
@@ -16,6 +18,7 @@ const features = [
     icon: <UserPlus size={28} className="text-green-600" />,
     button: "Join Network",
     gradient: "from-green-100 via-white to-green-50",
+    link: "/joinAsMember",
   },
   {
     title: "Talk to Experts",
@@ -23,6 +26,7 @@ const features = [
     icon: <Handshake size={28} className="text-purple-600" />,
     button: "Connect Now",
     gradient: "from-purple-100 via-white to-purple-50",
+    link: "/talkToExperts",
   },
   {
     title: "Group Discussions",
@@ -30,10 +34,13 @@ const features = [
     icon: <MessagesSquare size={28} className="text-pink-600" />,
     button: "Explore Groups",
     gradient: "from-pink-100 via-white to-pink-50",
+    link: "/groupDiscussions", // Optional: you can create this route too
   },
 ];
 
 const Features = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="grid md:grid-cols-2 gap-8 px-4 py-16 max-w-7xl mx-auto">
       {features.map((feature, index) => (
@@ -49,7 +56,10 @@ const Features = () => {
               <h2 className="text-2xl font-semibold text-gray-800">{feature.title}</h2>
             </div>
             <p className="text-gray-600">{feature.description}</p>
-            <Button className="mt-2 w-max bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-indigo-600 hover:to-purple-600 text-white">
+            <Button
+              onClick={() => navigate(feature.link)}
+              className="mt-2 w-max bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-indigo-600 hover:to-purple-600 text-white"
+            >
               {feature.button}
             </Button>
           </CardContent>

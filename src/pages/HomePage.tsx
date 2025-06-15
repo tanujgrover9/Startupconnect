@@ -4,7 +4,6 @@ import Navbar from "../components/Navbar";
 import Banner from "../components/Banner";
 import Footer from "../components/Footer";
 import Cards from "@/components/cards/Cards";
-import Tabs from "@/components/tabs/Tabs";
 import Experts from '@/components/Experts'
 import Newsletter from "@/components/Newsletter";
 import TrustedBySlider from "@/components/Trusted";

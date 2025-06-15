@@ -11,8 +11,15 @@ import CardPage from "./pages/CardPage";
 import NetBankingPage from "./pages/NetBankingPage";
 import WalletPage from "./pages/WalletPage";
 import CommunityPage from "./pages/Community";
+import Approach from "./pages/Approach";
+import StartBusinessPage from "./pages/StartBusinessPage";
+import FounderMistakesPage from "./pages/FounderMistakesPage";
+import PitchInvestorsPage from "./pages/PitchInvestorsPage";
+import TalkToExperts from "./pages/TalkToExperts";
+import JoinAsMember from "./pages/JoinAsMember";
 
 const App = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("theme") === "dark";
   });
@@ -43,6 +50,15 @@ const App = () => {
           <Route path="/payment/netbanking" element={<NetBankingPage />} />
           <Route path="/payment/wallet" element={<WalletPage />} />
           <Route path="/community" element={<CommunityPage />} />
+          <Route path="/approach" element={<Approach />} />
+          
+<Route path="/learn/start-business" element={<StartBusinessPage />} />
+<Route path="/learn/founder-mistakes" element={<FounderMistakesPage />} />
+<Route path="/learn/pitch-investors" element={<PitchInvestorsPage />} />
+<Route path="/talkToExperts" element={<TalkToExperts />} />
+<Route path="/joinAsMember" element={<JoinAsMember />} />
+<Route path="/findInvestors" element={<PitchInvestorsPage />} />
+
 
         </Routes>
       </Router>

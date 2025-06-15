@@ -1,153 +1,228 @@
-import React, { useState } from "react";
-import {
-  Search,
-  Send,
-  Users,
-  Video,
-  Phone,
-  PlusCircle,
-  MessageSquareHeart,
-  Sparkles,
-  Paperclip
-} from "lucide-react";
+// Enhanced and Redesigned Discord-Style Chat UI with a Polished Look
 
-const communities = [
-  { id: 1, name: "React Developers", logo: "⚛️", messages: [] },
-  { id: 2, name: "Gaming Hub", logo: "🎮", messages: [] },
-  { id: 3, name: "Fitness Tribe", logo: "💪", messages: [] },
-  { id: 4, name: "Crypto Talk", logo: "💰", messages: [] },
-  { id: 5, name: "Business Minds", logo: "📊", messages: [] },
-  { id: 6, name: "Startup Ideas", logo: "🚀", messages: [] },
-  { id: 7, name: "Tech News", logo: "📰", messages: [] },
-  { id: 8, name: "Govt. Updates", logo: "🏛️", messages: [] },
+import React, { useState, useRef, useEffect } from "react";
+import {
+  FaPaperPlane,
+  FaEllipsisV,
+  FaCog,
+  FaSignOutAlt,
+  FaPalette,
+  FaBan,
+  FaBellSlash,
+  FaTrashAlt,
+} from "react-icons/fa";
+import { FiMenu } from "react-icons/fi";
+import { MdAttachFile } from "react-icons/md";
+import { IoSearchSharp } from "react-icons/io5";
+import { HiOutlineSun, HiOutlineMoon } from "react-icons/hi2";
+import logo from "../assets/logo/original-12d769a8fc38f9fd2be3679989f9ae05-removebg-preview.png";
+
+const directChats = [
+  { id: 1, name: "Alice", status: "Active now", avatar: "https://i.pravatar.cc/150?img=1" },
+  { id: 2, name: "Bob", status: "Offline", avatar: "https://i.pravatar.cc/150?img=2" },
+  { id: 3, name: "Charlie", status: "Active now", avatar: "https://i.pravatar.cc/150?img=3" },
+  { id: 4, name: "David", status: "Offline", avatar: "https://i.pravatar.cc/150?img=4" },
 ];
 
-const CommunityPage = () => {
-  const [activeCommunity, setActiveCommunity] = useState(communities[0]);
-  const [message, setMessage] = useState("");
-  const [chat, setChat] = useState([]);
-  const [search, setSearch] = useState("");
+const groups = [
+  { id: 101, name: "#React Devs", avatar: "https://i.pravatar.cc/150?img=10" },
+  { id: 102, name: "#JS Nation", avatar: "https://i.pravatar.cc/150?img=11" },
+];
 
-  const handleSend = () => {
-    if (message.trim()) {
-      setChat([...chat, { user: "You", text: message }]);
-      setMessage("");
-    }
-  };
+const communities = [
+  { id: "c1", name: "Dev Community", groups: [101, 102] },
+];
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setChat([...chat, { user: "You", text: `Uploaded: ${file.name}` }]);
-    }
-  };
-
-  return (
-    <div className="flex h-screen bg-gradient-to-br from-gray-50 to-white">
-      {/* Sidebar */}
-      <div className="w-80 bg-white border-r shadow-lg p-4 flex flex-col">
-        <h2 className="text-2xl font-extrabold text-purple-600 mb-4 flex items-center gap-2">
-          <Sparkles size={20} /> Discover Communities
-        </h2>
-
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-2.5 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search communities..."
-            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-400"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-
-        <div className="flex-1 overflow-y-auto space-y-3 scrollbar-thin scrollbar-thumb-purple-300">
-          {communities
-            .filter((c) => c.name.toLowerCase().includes(search.toLowerCase()))
-            .map((comm) => (
-              <div
-                key={comm.id}
-                onClick={() => {
-                  setActiveCommunity(comm);
-                  setChat([]);
-                }}
-                className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition hover:bg-purple-100 ${
-                  activeCommunity.id === comm.id ? "bg-purple-100" : ""
-                }`}
-              >
-                <span className="text-2xl">{comm.logo}</span>
-                <div className="font-semibold text-gray-800">{comm.name}</div>
-              </div>
-            ))}
-        </div>
-
-        <button className="flex items-center justify-center gap-2 mt-4 py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
-          <PlusCircle size={18} /> Join New
-        </button>
-      </div>
-
-      {/* Chat Section */}
-      <div className="flex-1 flex flex-col bg-purple-50 rounded-tl-3xl overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center justify-between gap-4 px-6 py-4 border-b bg-white shadow-sm">
-          <div className="flex items-center gap-4">
-            <span className="text-3xl">{activeCommunity.logo}</span>
-            <h3 className="text-2xl font-bold text-gray-800">
-              {activeCommunity.name}
-            </h3>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="text-purple-600 hover:text-purple-800 transition">
-              <Video size={24} />
-            </button>
-            <button className="text-purple-600 hover:text-purple-800 transition">
-              <Phone size={24} />
-            </button>
-          </div>
-        </div>
-
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gradient-to-br from-purple-100 to-white scrollbar-thin scrollbar-thumb-purple-300">
-          {chat.length === 0 ? (
-            <p className="text-gray-500 text-center mt-10">No messages yet. Start the conversation!</p>
-          ) : (
-            chat.map((msg, index) => (
-              <div key={index} className="flex items-start gap-3">
-                <Users className="w-6 h-6 text-purple-500" />
-                <div>
-                  <p className="font-semibold text-sm text-gray-700">{msg.user}</p>
-                  <p className="text-gray-800 text-base bg-white px-4 py-2 rounded-xl shadow-sm mt-1">
-                    {msg.text}
-                  </p>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-
-        {/* Message Input */}
-        <div className="flex items-center gap-2 px-6 py-4 border-t bg-white">
-          <label className="cursor-pointer text-purple-600 hover:text-purple-800">
-            <Paperclip size={20} />
-            <input type="file" onChange={handleFileUpload} className="hidden" />
-          </label>
-          <input
-            type="text"
-            placeholder="Type your message..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="flex-1 border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-          />
-          <button
-            onClick={handleSend}
-            className="bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 transition"
-          >
-            <Send size={20} />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+const messagesData = {
+  1: [{ sender: "Alice", text: "Hello!", time: "10:00 AM", image: null }],
+  101: [{ sender: "Group Bot", text: "Welcome to #React Devs!", time: "9:00 AM", image: null }],
 };
 
-export default CommunityPage;
+export default function DiscordChat() {
+  const [activeUserId, setActiveUserId] = useState(1);
+  const [messages, setMessages] = useState(messagesData);
+  const [input, setInput] = useState("");
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [search, setSearch] = useState("");
+  const [expandedCommunities, setExpandedCommunities] = useState([]);
+  const chatRef = useRef(null);
+
+  useEffect(() => {
+    if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }, [messages, activeUserId]);
+
+  const toggleExpand = (id) => {
+    setExpandedCommunities((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  };
+
+  const handleSend = () => {
+    if (!input.trim()) return;
+    const newMsg = {
+      sender: "You",
+      text: input,
+      time: new Date().toLocaleTimeString(),
+      image: null,
+    };
+    const updated = {
+      ...messages,
+      [activeUserId]: [...(messages[activeUserId] || []), newMsg],
+    };
+    setMessages(updated);
+    setInput("");
+  };
+
+  const theme = isDarkMode ? "bg-gray-950 text-white" : "bg-white text-black";
+  const secondary = isDarkMode ? "bg-gray-900" : "bg-gray-100";
+  const border = isDarkMode ? "border-gray-800" : "border-gray-300";
+  const allUsers = [...directChats, ...groups];
+  const currentChat = allUsers.find((u) => u.id === activeUserId);
+
+  const chatOptions = [
+    { icon: <FaCog />, label: "Settings" },
+    { icon: <FaSignOutAlt />, label: "Leave Group" },
+    { icon: <FaPalette />, label: "Change Theme" },
+    { icon: <FaBan />, label: "Block User" },
+    { icon: <FaBellSlash />, label: "Mute Notifications" },
+    { icon: <FaTrashAlt />, label: "Clear Chat History" },
+  ];
+
+  return (
+    <div className={`flex h-screen ${theme} transition-colors duration-500`}>
+      <aside className={`w-72 p-4 border-r ${border} ${secondary} overflow-y-auto scrollbar-thin`}>        
+        <img src={logo} alt="Logo" className="h-12 mx-auto mb-6" />
+
+        <div className="flex items-center gap-2 mb-4 px-2">
+          <IoSearchSharp className="text-xl" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search..."
+            className={`w-full bg-transparent p-1 border rounded focus:outline-none ${border}`}
+          />
+        </div>
+
+        <section>
+          <h3 className="text-sm font-bold text-gray-400 mb-2 uppercase">Communities</h3>
+          {communities.map((com) => (
+            <div key={com.id}>
+              <p
+                onClick={() => toggleExpand(com.id)}
+                className="text-blue-400 cursor-pointer hover:underline px-2"
+              >
+                {com.name}
+              </p>
+              {expandedCommunities.includes(com.id) && (
+                <div className="ml-4 mt-2 space-y-1">
+                  {com.groups.map((gid) => {
+                    const group = groups.find((g) => g.id === gid);
+                    return (
+                      <div
+                        key={gid}
+                        onClick={() => setActiveUserId(gid)}
+                        className={`p-2 rounded flex items-center gap-2 cursor-pointer hover:bg-gray-700 ${
+                          activeUserId === gid ? "bg-gray-800" : ""
+                        }`}
+                      >
+                        <img src={group.avatar} className="w-8 h-8 rounded-full" alt={group.name} />
+                        <span className="truncate">{group.name}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          ))}
+        </section>
+
+        <section className="mt-6">
+          <h3 className="text-sm font-bold text-gray-400 mb-2 uppercase">Direct Chats</h3>
+          {directChats.map((user) => (
+            <div
+              key={user.id}
+              onClick={() => setActiveUserId(user.id)}
+              className={`p-2 rounded flex items-center gap-2 cursor-pointer hover:bg-gray-700 ${
+                activeUserId === user.id ? "bg-gray-800" : ""
+              }`}
+            >
+              <div className="relative">
+                <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full" />
+                {user.status === "Active now" && (
+                  <span className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 border-2 border-gray-950 rounded-full"></span>
+                )}
+              </div>
+              <span>{user.name}</span>
+            </div>
+          ))}
+        </section>
+
+        <footer className={`mt-6 pt-4 border-t ${border} flex items-center justify-between px-2`}>
+          <div className="flex items-center gap-2">
+            <img src="https://i.pravatar.cc/150?img=9" className="w-8 h-8 rounded-full" alt="You" />
+            <span>You</span>
+          </div>
+          <button onClick={() => setIsDarkMode(!isDarkMode)}>
+            {isDarkMode ? <HiOutlineSun className="text-yellow-400" /> : <HiOutlineMoon className="text-blue-600" />}
+          </button>
+        </footer>
+      </aside>
+
+      <main className="flex-1 flex flex-col">
+        <header className={`p-4 flex justify-between items-center border-b ${border} ${secondary}`}>
+          <div className="flex items-center gap-4">
+            <img src={currentChat?.avatar} className="w-10 h-10 rounded-full" alt="avatar" />
+            <div>
+              <h2 className="font-semibold text-lg">{currentChat?.name}</h2>
+              <p className="text-xs text-green-400">{currentChat?.status || "Group"}</p>
+            </div>
+          </div>
+          <div className="relative group">
+            <FaEllipsisV className="cursor-pointer" />
+            <div className="absolute right-0 top-full mt-2 bg-white text-black shadow-md rounded p-2 space-y-2 z-50 hidden group-hover:block">
+              {chatOptions.map((opt) => (
+                <div key={opt.label} className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 p-1 rounded">
+                  {opt.icon} <span>{opt.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </header>
+
+        <section ref={chatRef} className="flex-1 p-4 overflow-y-auto space-y-3">
+          {(messages[activeUserId] || []).map((msg, idx) => (
+            <div key={idx} className="bg-gray-800 p-3 rounded-xl max-w-md shadow-md">
+              <div className="flex justify-between">
+                <p className="font-medium">{msg.sender}</p>
+                <span className="text-xs text-gray-400">{msg.time}</span>
+              </div>
+              {msg.image && <img src={msg.image} alt="Attachment" className="mt-2 rounded" />}
+              <p className="mt-1 text-sm">{msg.text}</p>
+            </div>
+          ))}
+        </section>
+
+        <footer className={`p-4 border-t ${border} flex gap-2 items-center ${secondary}`}>
+          <label htmlFor="file-upload" className="cursor-pointer text-xl">
+            <MdAttachFile />
+          </label>
+          <input id="file-upload" type="file" className="hidden" />
+
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+            placeholder="Type a message..."
+            className={`flex-1 px-4 py-2 rounded-full border ${border} bg-transparent focus:outline-none`}
+          />
+
+          <button onClick={handleSend} className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+            <FaPaperPlane />
+          </button>
+        </footer>
+      </main>
+    </div>
+  );
+}
