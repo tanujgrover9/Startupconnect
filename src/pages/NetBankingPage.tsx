@@ -1,4 +1,3 @@
-import React from 'react';
 import { User, Mail, Phone, Banknote } from 'lucide-react';
 
 const NetBankingPage = () => {

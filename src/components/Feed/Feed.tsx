@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { IoChatbubblesOutline } from 'react-icons/io5'; // Chat icon
 import { FaBookmark, FaImage, FaLink, FaRegCommentDots, FaShare, FaThumbsUp, FaVideo } from 'react-icons/fa';
 import profile1 from '../../assets/aatik-tasneem-7omHUGhhmZ0-unsplash.jpg';

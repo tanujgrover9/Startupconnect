@@ -1,4 +1,3 @@
-import React from 'react';
 import profile7 from '../assets/jonas-kakaroto-KIPqvvTOC1s-unsplash (1).jpg';
 import profile8 from '../assets/ben-den-engelsen-YUu9UAcOKZ4-unsplash.jpg';
 import profile9 from '../assets/nicolas-horn-MTZTGvDsHFY-unsplash.jpg';

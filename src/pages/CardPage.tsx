@@ -1,4 +1,3 @@
-import React from 'react';
 import { CreditCard, User, Mail, CalendarClock, ShieldCheck } from 'lucide-react';
 
 const CardPage = () => {

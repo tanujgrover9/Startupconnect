@@ -1,5 +1,5 @@
 // src/components/PostCreator.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 
 const PostCreator = () => {
   const [text, setText] = useState("");

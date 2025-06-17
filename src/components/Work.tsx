@@ -1,4 +1,3 @@
-import React from "react";
 import { BookOpen, Users, MessageCircle, Rocket } from "lucide-react";
 import { motion } from "framer-motion";
 

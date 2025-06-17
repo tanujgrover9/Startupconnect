@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import bgImage from "@/assets/sean-pollock-PhYq704ffdA-unsplash.jpg";
 import { Link } from "react-router-dom";

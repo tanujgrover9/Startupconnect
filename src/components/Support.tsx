@@ -1,4 +1,3 @@
-import React from "react";
 import { Video, Headphones, Compass } from "lucide-react";
 import { Link } from "react-router-dom";
 

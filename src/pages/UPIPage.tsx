@@ -1,4 +1,3 @@
-import React from 'react';
 import { User, Mail, ScanLine } from 'lucide-react';
 
 const UPIPage = () => {
