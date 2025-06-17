@@ -19,8 +19,7 @@ import TalkToExperts from "./pages/TalkToExperts";
 import JoinAsMember from "./pages/JoinAsMember";
 
 const App = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [darkMode, setDarkMode] = useState(() => {
+  const [darkMode] = useState(() => {
     return localStorage.getItem("theme") === "dark";
   });
 

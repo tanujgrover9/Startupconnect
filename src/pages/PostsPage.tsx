@@ -3,7 +3,22 @@ import { Calendar, X } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-const blogs = Array.from({ length: 10 }).map((_, i) => ({
+// Blog type definition
+type Blog = {
+  title: string;
+  image: string;
+  author: {
+    name: string;
+    image: string;
+  };
+  date: string;
+  tags: string[];
+  excerpt: string;
+  fullContent: string;
+};
+
+// Dummy blog data
+const blogs: Blog[] = Array.from({ length: 10 }).map((_, i) => ({
   title: `Blog Post Title ${i + 1}`,
   image: `https://picsum.photos/seed/${i}/800/400`,
   author: {
@@ -12,13 +27,12 @@ const blogs = Array.from({ length: 10 }).map((_, i) => ({
   },
   date: `May ${10 + i}, 2025`,
   tags: ["Business", "Tech", "Finance"].slice(0, (i % 3) + 1),
-  excerpt:
-    "This is a short summary of the blog post to entice readers to learn more...",
+  excerpt: "This is a short summary of the blog post to entice readers to learn more...",
   fullContent: `This is the full content of blog post number ${i + 1}. Here, you would include paragraphs, quotes, images, and more to complete the article. It's designed to showcase how the modal works with longer content.`,
 }));
 
 const BlogPage = () => {
-  const [selectedBlog, setSelectedBlog] = useState(null);
+  const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
 
   return (
     <>

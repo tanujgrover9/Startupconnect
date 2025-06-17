@@ -1,4 +1,4 @@
-import { CheckCircle, ClipboardList, Settings, Rocket, TrendingUp } from "lucide-react";
+import {  ClipboardList, Settings, Rocket, TrendingUp } from "lucide-react";
 
 const steps = [
   {

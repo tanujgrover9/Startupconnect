@@ -148,7 +148,7 @@ const PaymentPage: React.FC = () => {
                 <motion.div
                   drag="x"
                   dragConstraints={sliderRef}
-                  onDragEnd={(e, info) => {
+                  onDragEnd={(_e, info) => {
                     if (sliderRef.current) {
                       const containerWidth = sliderRef.current.offsetWidth;
                       if (info.point.x - sliderRef.current.getBoundingClientRect().left > containerWidth - 100) {

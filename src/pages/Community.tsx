@@ -1,5 +1,3 @@
-// Enhanced and Redesigned Discord-Style Chat UI with Improved Styling and UX
-
 import { useState, useRef, useEffect } from "react";
 import {
   FaPaperPlane,
@@ -16,41 +14,73 @@ import { IoSearchSharp } from "react-icons/io5";
 import { HiOutlineSun, HiOutlineMoon } from "react-icons/hi2";
 import logo from "../assets/logo/original-12d769a8fc38f9fd2be3679989f9ae05-removebg-preview.png";
 
-const directChats = [
+// Types
+
+type User = {
+  id: number;
+  name: string;
+  status: string;
+  avatar: string;
+};
+
+type Group = {
+  id: number;
+  name: string;
+  avatar: string;
+};
+
+type Community = {
+  id: string;
+  name: string;
+  groups: number[];
+};
+
+type Message = {
+  sender: string;
+  text: string;
+  time: string;
+  image: string | null;
+};
+
+type MessageMap = {
+  [key: number]: Message[];
+};
+
+const directChats: User[] = [
   { id: 1, name: "Alice", status: "Active now", avatar: "https://i.pravatar.cc/150?img=1" },
   { id: 2, name: "Bob", status: "Offline", avatar: "https://i.pravatar.cc/150?img=2" },
   { id: 3, name: "Charlie", status: "Active now", avatar: "https://i.pravatar.cc/150?img=3" },
   { id: 4, name: "David", status: "Offline", avatar: "https://i.pravatar.cc/150?img=4" },
 ];
 
-const groups = [
+const groups: Group[] = [
   { id: 101, name: "#React Devs", avatar: "https://i.pravatar.cc/150?img=10" },
   { id: 102, name: "#JS Nation", avatar: "https://i.pravatar.cc/150?img=11" },
 ];
 
-const communities = [
+const communities: Community[] = [
   { id: "c1", name: "Dev Community", groups: [101, 102] },
 ];
 
-const messagesData = {
+const messagesData: MessageMap = {
   1: [{ sender: "Alice", text: "Hello!", time: "10:00 AM", image: null }],
   101: [{ sender: "Group Bot", text: "Welcome to #React Devs!", time: "9:00 AM", image: null }],
 };
 
 export default function DiscordChat() {
-  const [activeUserId, setActiveUserId] = useState(1);
-  const [messages, setMessages] = useState(messagesData);
+  const [activeUserId, setActiveUserId] = useState<number>(1);
+  const [messages, setMessages] = useState<MessageMap>(messagesData);
   const [input, setInput] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [search, setSearch] = useState("");
-  const [expandedCommunities, setExpandedCommunities] = useState([]);
-  const chatRef = useRef(null);
+  const [expandedCommunities, setExpandedCommunities] = useState<string[]>([]);
+  const chatRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [messages, activeUserId]);
 
-  const toggleExpand = (id) => {
+  const toggleExpand = (id: string) => {
     setExpandedCommunities((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
@@ -58,13 +88,13 @@ export default function DiscordChat() {
 
   const handleSend = () => {
     if (!input.trim()) return;
-    const newMsg = {
+    const newMsg: Message = {
       sender: "You",
       text: input,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       image: null,
     };
-    const updated = {
+    const updated: MessageMap = {
       ...messages,
       [activeUserId]: [...(messages[activeUserId] || []), newMsg],
     };
@@ -105,16 +135,14 @@ export default function DiscordChat() {
           <h3 className="text-sm font-bold text-gray-400 mb-2 uppercase">Communities</h3>
           {communities.map((com) => (
             <div key={com.id}>
-              <p
-                onClick={() => toggleExpand(com.id)}
-                className="text-blue-500 cursor-pointer hover:underline px-2"
-              >
+              <p onClick={() => toggleExpand(com.id)} className="text-blue-500 cursor-pointer hover:underline px-2">
                 {com.name}
               </p>
               {expandedCommunities.includes(com.id) && (
                 <div className="ml-4 mt-2 space-y-1">
                   {com.groups.map((gid) => {
                     const group = groups.find((g) => g.id === gid);
+                    if (!group) return null;
                     return (
                       <div
                         key={gid}
@@ -168,7 +196,7 @@ export default function DiscordChat() {
             <img src={currentChat?.avatar} className="w-10 h-10 rounded-full" alt="avatar" />
             <div>
               <h2 className="font-semibold text-lg">{currentChat?.name}</h2>
-              <p className="text-xs text-green-400">{currentChat?.status || "Group"}</p>
+              <p className="text-xs text-green-400">{"status" in currentChat! ? (currentChat as User).status : "Group"}</p>
             </div>
           </div>
           <div className="relative group">
@@ -184,7 +212,7 @@ export default function DiscordChat() {
         </header>
 
         <section ref={chatRef} className="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-950">
-          {(messages[activeUserId] || []).map((msg, idx) => (
+          {(messages[activeUserId] || []).map((msg: Message, idx: number) => (
             <div key={idx} className="bg-gray-800 p-3 rounded-xl max-w-md shadow-md">
               <div className="flex justify-between">
                 <p className="font-medium">{msg.sender}</p>
