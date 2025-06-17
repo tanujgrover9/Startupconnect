@@ -154,7 +154,7 @@ const [savedPosts] = useState<number[]>([]);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function toggleLike(id: number): void {
+  function toggleLike(_id: number): void {
     throw new Error('Function not implemented.');
   }
 
