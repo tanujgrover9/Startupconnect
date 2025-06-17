@@ -34,7 +34,7 @@ const features = [
     icon: <MessagesSquare size={28} className="text-pink-600" />,
     button: "Explore Groups",
     gradient: "from-pink-100 via-white to-pink-50",
-    link: "/groupDiscussions", // Optional: you can create this route too
+    link: "/community", 
   },
 ];
 
