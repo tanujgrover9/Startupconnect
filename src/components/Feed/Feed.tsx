@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { IoChatbubblesOutline } from 'react-icons/io5'; // Chat icon
 import { FaBookmark, FaImage, FaLink, FaRegCommentDots, FaShare, FaThumbsUp, FaVideo } from 'react-icons/fa';
-import { FiUser } from 'react-icons/fi';
 import profile1 from '../../assets/aatik-tasneem-7omHUGhhmZ0-unsplash.jpg';
 import post1 from '../../assets/sean-pollock-PhYq704ffdA-unsplash.jpg';
 
@@ -135,9 +134,9 @@ const Feed = () => {
   const [showChat, setShowChat] = useState(false);
   const [hoveredPost, setHoveredPost] = useState<number | null>(null);
   const [likedPosts] = useState<number[]>([]);
-const [savedPosts, setSavedPosts] = useState<number[]>([]);
-const [sharedPosts, setSharedPosts] = useState<number[]>([]);
-const [repostedPosts, setRepostedPosts] = useState<number[]>([]);
+const [savedPosts] = useState<number[]>([]);
+// const [sharedPosts, setSharedPosts] = useState<number[]>([]);
+// const [repostedPosts, setRepostedPosts] = useState<number[]>([]);
 
 
 
@@ -147,8 +146,15 @@ const [repostedPosts, setRepostedPosts] = useState<number[]>([]);
     setImage(null);
   };
 
+ 
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function toggleLike(_id: number): void {
+  function handleFollow(_id: number): void {
+    throw new Error('Function not implemented.');
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function toggleLike(id: number): void {
     throw new Error('Function not implemented.');
   }
 
@@ -241,86 +247,87 @@ const [repostedPosts, setRepostedPosts] = useState<number[]>([]);
         Post
       </button>
     </div>
-
-    {dummyPosts.map((post) => (
-  <div key={post.id} className="bg-white rounded-xl shadow-md p-5 mb-6 transition hover:shadow-lg">
-    
-    {/* User Info Row */}
-    <div className="flex justify-between items-center mb-3">
-      <div className="flex items-center space-x-4">
+{dummyPosts.map((post) => (
+  <div
+    key={post.id}
+    className="bg-white/90 border border-gray-200 rounded-2xl shadow-lg p-6 mb-8 transition-all duration-300 hover:shadow-2xl"
+  >
+    {/* Top Row - User Info */}
+    <div className="flex justify-between items-center mb-4">
+      <div className="flex items-center gap-4">
         <img
           src={post.image}
           alt={post.name}
-          className="w-12 h-12 rounded-full object-cover border border-gray-300"
+          className="w-14 h-14 rounded-full object-cover ring-2 ring-blue-500 shadow-sm"
         />
         <div>
-          <h4 className="font-semibold text-base text-gray-800">{post.name}</h4>
+          <h4 className="font-semibold text-lg text-gray-900">{post.name}</h4>
           <p className="text-sm text-gray-500">{post.role}</p>
         </div>
       </div>
 
-      {/* Follow Button */}
       <button
-        className="px-4 py-1 text-sm rounded-full bg-blue-600 text-white font-medium hover:bg-blue-700 transition"
-        onClick={() => handleFollow(post.id)} // Add this function to manage follow state
+        onClick={() => handleFollow(post.id)}
+        className="px-5 py-1.5 text-sm font-semibold bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full shadow-md hover:brightness-110 transition duration-200"
       >
         Follow
       </button>
     </div>
 
     {/* Post Text */}
-    <p className="mb-3 text-gray-800 leading-relaxed">{post.text}</p>
+    <p className="text-gray-800 text-[15px] leading-relaxed mb-4">{post.text}</p>
 
     {/* Post Image */}
     {post.postImage && (
-      <img
-        src={post.postImage}
-        alt="Post"
-        className="rounded-lg max-h-96 w-full object-cover mb-4"
-      />
+      <div className="overflow-hidden rounded-xl shadow-sm mb-4">
+        <img
+          src={post.postImage}
+          alt="Post"
+          className="w-full h-auto object-cover transition-transform hover:scale-[1.02] duration-300"
+        />
+      </div>
     )}
 
     {/* Reactions */}
-    <div className="flex justify-around items-center text-gray-600 text-sm border-t pt-3">
-      
+    <div className="flex justify-between items-center pt-4 border-t text-gray-600 text-sm">
       {/* Like */}
       <div
         onClick={() => toggleLike(post.id)}
         onMouseEnter={() => setHoveredPost(post.id)}
         onMouseLeave={() => setHoveredPost(null)}
-        className={`relative cursor-pointer flex items-center gap-2 px-3 py-1 rounded-md hover:bg-blue-50 transition ${
+        className={`relative flex items-center gap-2 cursor-pointer px-3 py-2 rounded-lg hover:bg-gray-100 transition ${
           likedPosts.includes(post.id) ? 'text-blue-600 font-semibold' : ''
         }`}
       >
         <FaThumbsUp />
         <span>Like</span>
 
-        {/* Emoji Reactions */}
+        {/* Reactions Panel */}
         {hoveredPost === post.id && (
-          <div className="absolute bottom-8 left-0 flex space-x-2 bg-white border border-gray-200 rounded-full px-3 py-1 shadow-md z-10 text-xl">
-            <span className="cursor-pointer hover:scale-110 transition">👍</span>
-            <span className="cursor-pointer hover:scale-110 transition">❤️</span>
-            <span className="cursor-pointer hover:scale-110 transition">😂</span>
-            <span className="cursor-pointer hover:scale-110 transition">😮</span>
+          <div className="absolute -top-12 left-0 flex space-x-2 bg-white border border-gray-200 rounded-full px-3 py-1 shadow-lg z-10 text-xl animate-fade-in">
+            <span className="cursor-pointer hover:scale-125 transition">👍</span>
+            <span className="cursor-pointer hover:scale-125 transition">❤️</span>
+            <span className="cursor-pointer hover:scale-125 transition">😂</span>
+            <span className="cursor-pointer hover:scale-125 transition">😮</span>
           </div>
         )}
       </div>
 
       {/* Comment */}
-      <div className="cursor-pointer flex items-center gap-2 px-3 py-1 rounded-md hover:bg-blue-50 transition">
+      <div className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
         <FaRegCommentDots />
         <span>Comment</span>
       </div>
 
       {/* Share */}
-      <div className="cursor-pointer flex items-center gap-2 px-3 py-1 rounded-md hover:bg-blue-50 transition">
+      <div className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
         <FaShare />
         <span>Share</span>
       </div>
 
       {/* Save */}
       <div
-        className={`cursor-pointer flex items-center gap-2 px-3 py-1 rounded-md hover:bg-blue-50 transition ${
+        className={`cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition ${
           savedPosts?.includes?.(post.id) ? 'text-blue-600 font-semibold' : ''
         }`}
       >
@@ -330,6 +337,7 @@ const [repostedPosts, setRepostedPosts] = useState<number[]>([]);
     </div>
   </div>
 ))}
+
 
 
 
@@ -378,6 +386,7 @@ const [repostedPosts, setRepostedPosts] = useState<number[]>([]);
     for ad placements.
   </p>
 </div>
+
 
 
         <div className="bg-white p-6 rounded-xl shadow-lg">

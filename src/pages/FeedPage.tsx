@@ -1,7 +1,6 @@
 // src/pages/FeedPage.tsx
 import React from "react";
 import Navbar from "../components/Navbar";
-import PostCreator from "../components/Feed/PostCreator";
 import Feed from "../components/Feed/Feed";
 import Footer from "../components/Footer";
 

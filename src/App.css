@@ -1,7 +1,7 @@
 body {
   background-color: #98b1ca; /* Light background */
   margin: 0;
-  font-family: sans-serif;
+  font-family: outfit  !important;
 }
 
 #root {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   CreditCard,
   Banknote,
@@ -53,25 +53,26 @@ const paymentOptions: PaymentOption[] = [
 const PaymentPage: React.FC = () => {
   const [selected, setSelected] = useState<string | null>(null);
   const [completed, setCompleted] = useState(false);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   const handleSlide = () => {
-    setTimeout(() => setCompleted(true), 800);
+    setTimeout(() => setCompleted(true), 600);
   };
 
   const selectedOption = paymentOptions.find((opt) => opt.key === selected);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col md:flex-row font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-blue-100 flex flex-col md:flex-row font-sans">
       {/* Sidebar */}
-      <div className="md:w-1/3 bg-white p-6 border-b md:border-b-0 md:border-r border-blue-200 flex flex-col items-center">
-        <img src={companyLogo} alt="Logo" className="h-14 mb-6" />
+      <div className="md:w-1/3 bg-white p-6 border-b md:border-b-0 md:border-r border-blue-200 flex flex-col items-center justify-center">
+        <img src={companyLogo} alt="Logo" className="h-16 mb-6 drop-shadow" />
         <img
           src={illustrationImg}
           alt="illustration"
-          className="h-60 w-auto object-contain mb-6"
+          className="h-64 w-auto object-contain mb-6 animate-bounce-slow"
         />
-        <p className="text-sm text-blue-600 font-medium text-center">
-          Secure & Encrypted Payment
+        <p className="text-sm text-blue-600 font-semibold text-center">
+          100% Secure & Encrypted Payment
         </p>
       </div>
 
@@ -81,9 +82,9 @@ const PaymentPage: React.FC = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-3xl md:text-4xl font-bold text-blue-600 mb-8"
+          className="text-4xl font-extrabold text-blue-700 mb-10 text-center md:text-left"
         >
-          Choose Payment Method
+          Select Your Payment Method
         </motion.h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
@@ -94,15 +95,15 @@ const PaymentPage: React.FC = () => {
                 setSelected(option.key);
                 setCompleted(false);
               }}
-              className={`flex items-center gap-4 p-4 border rounded-xl shadow transition hover:scale-105 duration-300 ${
+              className={`flex items-center gap-4 p-5 border rounded-2xl shadow-md transition hover:shadow-lg hover:scale-[1.02] ${
                 selected === option.key
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-blue-200"
+                  ? "border-blue-500 bg-blue-100/40"
+                  : "border-blue-200 bg-white"
               }`}
             >
               {option.icon}
               <div className="text-left">
-                <h4 className="font-semibold text-lg text-gray-800">
+                <h4 className="font-bold text-lg text-gray-800">
                   {option.label}
                 </h4>
                 <p className="text-sm text-gray-500">{option.desc}</p>
@@ -119,11 +120,11 @@ const PaymentPage: React.FC = () => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -200, opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-white rounded-xl p-6 border border-blue-200 shadow"
+              className="bg-white rounded-2xl p-6 border border-blue-200 shadow-xl"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {selectedOption.fields.map((field) => (
-                  <div key={field} className="mb-2">
+                  <div key={field}>
                     <label className="block text-sm font-medium text-blue-700 mb-1">
                       {field}
                     </label>
@@ -136,21 +137,31 @@ const PaymentPage: React.FC = () => {
                 ))}
               </div>
 
-              {/* Slide to Pay Button */}
-              <div className="mt-6 relative h-12 w-full bg-blue-100 rounded-full overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center text-blue-400 font-semibold pointer-events-none">
-                  Slide to Pay
+              {/* Slide to Pay */}
+              <div
+                className="mt-8 relative h-14 w-full bg-gradient-to-r from-blue-100 to-blue-200 rounded-full overflow-hidden shadow-inner"
+                ref={sliderRef}
+              >
+                <div className="absolute inset-0 flex items-center justify-center text-blue-500 font-semibold pointer-events-none">
+                  Slide to Pay →
                 </div>
                 <motion.div
                   drag="x"
-                  dragConstraints={{ left: 0, right: 240 }}
+                  dragConstraints={sliderRef}
                   onDragEnd={(e, info) => {
-                    if (info.offset.x > 200) handleSlide();
+                    if (sliderRef.current) {
+                      const containerWidth = sliderRef.current.offsetWidth;
+                      if (info.point.x - sliderRef.current.getBoundingClientRect().left > containerWidth - 100) {
+                        handleSlide();
+                      }
+                    }
                   }}
-                  className="h-full w-36 bg-blue-500 rounded-full shadow-lg text-white font-medium flex items-center justify-center gap-2 cursor-pointer z-10 relative"
+                  className="h-full w-36 bg-blue-600 rounded-full shadow-lg text-white font-semibold flex items-center justify-center gap-2 cursor-pointer z-10 relative"
                   whileTap={{ scale: 0.95 }}
+                  whileDrag={{ scale: 1.05 }}
                 >
                   <ArrowRight className="w-5 h-5" />
+                  Pay
                 </motion.div>
               </div>
             </motion.div>
@@ -161,14 +172,16 @@ const PaymentPage: React.FC = () => {
               key="success"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              transition={{ type: "spring", stiffness: 200, damping: 15 }}
               className="flex flex-col items-center justify-center h-full text-center py-12"
             >
               <CheckCircle className="w-20 h-20 text-green-500 mb-4" />
-              <h2 className="text-2xl font-bold text-green-600 mb-2">
+              <h2 className="text-3xl font-bold text-green-600 mb-2">
                 Payment Successful!
               </h2>
-              <p className="text-gray-500">Thank you for your payment.</p>
+              <p className="text-gray-600 text-sm">
+                Your transaction has been processed securely.
+              </p>
             </motion.div>
           )}
         </AnimatePresence>
