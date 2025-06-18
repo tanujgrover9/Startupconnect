@@ -28,7 +28,7 @@ const Navbar = () => {
           <img
             src={logo}
             alt="StartupConnect Logo"
-            className="h-10 w-auto object-contain drop-shadow-md"
+            className="h-14 w-auto object-contain drop-shadow-md"
           />
         </Link>
 

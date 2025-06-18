@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Calendar, X } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -32,6 +32,9 @@ const blogs: Blog[] = Array.from({ length: 10 }).map((_, i) => ({
 }));
 
 const BlogPage = () => {
+   useEffect(() => {
+      window.scrollTo(0, 0); // Scroll to top when component mounts
+    }, []);
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
 
   return (

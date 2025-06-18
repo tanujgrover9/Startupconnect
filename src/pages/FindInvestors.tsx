@@ -2,6 +2,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import investorBanner from "../assets/investor-banner.jpg";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
 const investors = Array.from({ length: 12 }, (_, i) => ({
   name: `Investor ${i + 1}`,
@@ -12,6 +14,8 @@ const investors = Array.from({ length: 12 }, (_, i) => ({
 
 const FindInvestors = () => {
   return (
+    <>
+    <Navbar/>
     <section className="bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950 min-h-screen">
       {/* Hero Banner */}
       <div className="relative w-full h-72 md:h-96 overflow-hidden rounded-b-3xl shadow-lg">
@@ -77,6 +81,9 @@ const FindInvestors = () => {
         </div>
       </div>
     </section>
+    <Footer/>
+    </>
+    
   );
 };
 
